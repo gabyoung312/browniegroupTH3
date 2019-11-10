@@ -26,25 +26,34 @@ def get_products():
 
 
 branches = {
-    1: {"name":"Katipunan","phonenumber":"09179990000"},
-    2: {"name":"Tomas Morato","phonenumber":"09179990001"},
-    3: {"name":"Eastwood","phonenumber":"09179990002"},
-    4: {"name":"Tiendesitas","phonenumber":"09179990003"},
-    5: {"name":"Arcovia","phonenumber":"09179990004"},
+1: {"name":"Katipunan","phonenumber":"09179990000"},
+2: {"name":"Tomas Morato","phonenumber":"09179990001"},
+3: {"name":"Eastwood","phonenumber":"09179990002"},
+4: {"name":"Tiendesitas","phonenumber":"09179990003"},
+5: {"name":"Arcovia","phonenumber":"09179990004"},
 }
 
+
+def get_product(code):
+    return products[code]
+
+def get_products():
+    product_list = []
+    for i,v in products.items():
+        product = v
+        product.setdefault("code",i)
+        product_list.append(product)
+    return product_list
 
 def get_branch(code):
     return branches[code]
 
 def get_branches():
     branch_list = []
-
     for i,v in branches.items():
         branch = v
         branch.setdefault("code",i)
         branch_list.append(branch)
-
     return branch_list
 
 users = {
