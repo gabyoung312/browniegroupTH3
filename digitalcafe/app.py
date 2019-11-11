@@ -18,15 +18,17 @@ app.secret_key = b's@g@d@c0ff33!'
 logging.basicConfig(level=logging.DEBUG)
 app.logger.setLevel(logging.INFO)
 
-@app.route('/addtocart')
+@app.route('/addtocart', methods = ['POST', ])
 def addtocart():
-    code = request.args.get('code', '')
+    code = request.form.get('code')
+    quantity = int(request.form.get('quantity'))
     product = db.get_product(int(code))
     item=dict()
     # A click to add a product translates to a
     # quantity of 1 for now
 
-    item["qty"] = 1
+    item["qty"] = quantity
+    item["code"] = code
     item["name"] = product["name"]
     item["subtotal"] = product["price"]*item["qty"]
 
@@ -38,9 +40,34 @@ def addtocart():
     session["cart"]=cart
     return redirect('/cart')
 
+
+@app.route('/updatecart', methods = ['POST', ])
+def updatecart():
+
+    request_type = request.form.get('submit')
+    code = request.form.get('code')
+    product = db.get_product(int(code))
+    cart = session["cart"]
+
+    # Update quantity of item in cart
+    if request_type == "Update":
+        quantity = int(request.form.get("quantity"))
+        cart[code]["qty"] = quantity
+        cart[code]["subtotal"] = quantity * product["price"]
+
+    # Remove item from cart
+    elif request_type == 'Remove':
+        del cart[code]
+
+    session["cart"] = cart
+    
+    return redirect('/cart')
+
+
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
+
 
 @app.route('/logout')
 def logout():
