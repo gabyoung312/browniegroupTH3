@@ -124,6 +124,7 @@ def branchdetails():
     branch = db.get_branch(int(code))
     return render_template('branchdetails.html', code=code,branch=branch)
 
+
 @app.route('/aboutus')
 def aboutus():
     return render_template('aboutus.html', page="About Us")
