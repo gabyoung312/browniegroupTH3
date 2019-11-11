@@ -24,8 +24,6 @@ def addtocart():
     quantity = int(request.form.get('quantity'))
     product = db.get_product(int(code))
     item=dict()
-    # A click to add a product translates to a
-    # quantity of 1 for now
 
     item["qty"] = quantity
     item["code"] = code
